@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+        <meta charset="utf-8" />
+        <title>停车场平面图</title>
+        <link rel="stylesheet" href="css/page.css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+        <script type="text/javascript" src="js/index.js" ></script> 
+        <script src="jquery.js"></script>
+        <script src="jquery.panzoom.js"></script>
+        <script src="jquery.mousewheel.js"></script>  
+        <style type="text/css">
+            body { background: #F5FCFF; color: #333666; }
+            section { text-align: center; margin: 50px 0; }
+            .panzoom-parent { border: 2px solid #333; }
+            .panzoom-parent .panzoom { border: 2px dashed #666; }
+            .buttons { margin: 40px 0 0; }
+          </style>
+    </head>
+    <script>
+    </script>
+
+	<body>
+
+		<div class="left">
+			<div class="bigTitle">智能停车场管理系统</div>
+			<div class="lines">
+				<div onclick="pageClick(this)" ><img src="img/icon-1.png" />停车场位置信息</div>
+				<div onclick="pageClick(this)" class="active"><img src="img/icon-2.png" />车位信息管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-3.png" />实时监控管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-4.png" />停车场管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-5.png" />关于我们</div>
+			</div>
+		</div>
+		<div class="top">
+			<div class="leftTiyle" id="flTitle">车位信息管理</div>
+			<div class="thisUser">当前用户:郭子杨
+			</div>
+		</div>
+<div class="content">
+
+    <section id="focal">
+        <div class="parent">
+        <svg  class="panzoom" width=900px height=900px xmlns="http://www.w3.org/2000/svg" version="1.1" >
+          <polyline points="25,110 10,110 10,10 85,10 85,110 70,110" style="fill:white;stroke:black;stroke-width:2" />
+          <rect id="A1green" x="12" y="12" width="71" height="96"
+          style="fill:green;stroke:green;stroke-width:1"/>
+          <rect id="A1red" x="12" y="12" width="71" height="96"
+          style="fill:red;stroke:red;stroke-width:1"/>
+          <text id="A1text" x="35" y="55" fill="black">A1</text>
+        
+        </svg>
+        </div>
+        </div>
+        <script>
+          (function() {
+            var $section = $('#focal');
+            var $panzoom = $section.find('.panzoom').panzoom({
+                startTransform: 'scale(0.9)',
+                maxScale: 2,
+                increment: 0.1,
+                contain: true
+             }).panzoom('zoom', true);
+            var $panzoom = $section.find('.panzoom').panzoom();
+            $panzoom.parent().on('mousewheel.focal', function( e ) {
+              e.preventDefault();
+              var delta = e.delta || e.originalEvent.wheelDelta;
+              var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+              $panzoom.panzoom('zoom', zoomOut, {
+                increment: 0.1,
+                animate: false,
+                focal: e
+              });
+            });
+          })();
+        </script>
+      </section>
+  
+      <!-- Load livereload if not phantom or github -->
+      <script>
+        if ( !window.phantom && !/github/.test(window.location.hostname) ) document.write('<scr' + 'ipt src="http://' + location.hostname + ':35711/livereload.js"></scr' + 'ipt>');
+      </script>
+ </div>
+    </body>
+    <script type="text/javascript">
+        var judge=0;
+        if(judge==1)
+        {
+          document.getElementById("A1red").style.visibility="visible";
+          document.getElementById("A1text").style.visibility="visible";
+          document.getElementById("A1green").style.visibility="hidden";
+        }
+        else
+        {
+          document.getElementById("A1green").style.visibility="visible";
+          document.getElementById("A1red").style.visibility="hidden";
+          document.getElementById("A1text").style.visibility="visible";
+        }
+        </script>
+
+
+</html>

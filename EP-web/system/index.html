@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<meta name="keywords" content="百度地图,百度地图API，百度地图自定义工具，百度地图所见即所得工具" />
+		<meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
+		<title>首页</title>
+		<link rel="stylesheet" href="css/page.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+		<script type="text/javascript" src="js/index.js" ></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+		<style type="text/css">
+			html,body{margin:0;padding:0;}
+			.iw_poi_title {color:#CC5522;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
+			.iw_poi_content {font:12px arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
+		</style>
+	</head>
+
+	<body onload="find()">
+		<div class="left">
+			<div class="bigTitle">智能停车场管理系统</div>
+			<div class="lines">
+				<div onclick="pageClick(this)" class="active";><img src="img/icon-1.png" />停车场位置信息</div>
+				<div onclick="pageClick(this)"><img src="img/icon-2.png" />车位信息管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-3.png";/>实时监控管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-4.png" />停车场管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-5.png" />添加停车场</div>
+			</div>
+		</div>
+		<div class="top">
+			<div class="leftTiyle" id="flTitle">停车场位置信息</div>
+			<div class="thisUser" id="thisUser">
+			</div>
+		</div>
+<div class="content">
+	<div style="width:100%;height:100%;border:#ccc solid 1px;" id="dituContent"></div>
+</div>
+	</body>
+	<script type="text/javascript">    
+		//创建和初始化地图函数：
+		function initMap(){
+			createMap();//创建地图
+			setMapEvent();//设置地图事件
+			addMapControl();//向地图添加控件
+			addMarker();//向地图中添加marker
+		}
+		
+		//创建地图函数：
+		function createMap(){
+			var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+			var point = new BMap.Point(117.152487,34.219228);//定义一个中心点坐标
+			map.centerAndZoom(point,17);//设定地图的中心点和坐标并将地图显示在地图容器中
+			window.map = map;//将map变量存储在全局
+			
+		}
+		
+		//地图事件设置函数：
+		function setMapEvent(){
+			map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+			map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+			map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+			map.enableKeyboard();//启用键盘上下左右键移动地图
+		}
+		
+		//地图控件添加函数：
+		function addMapControl(){
+			//向地图中添加缩放控件
+		var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+		map.addControl(ctrl_nav);
+			//向地图中添加缩略图控件
+		var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
+		map.addControl(ctrl_ove);
+			//向地图中添加比例尺控件
+		var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+		map.addControl(ctrl_sca);
+		}
+		
+		//标注点数组
+		var markerArr = [{title:"1号停车场",content:"露天",point:"117.150879|34.2199",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
+			 ,{title:"2号停车场",content:"露天",point:"117.156251|34.220825",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
+			 ,{title:"博4地下停车场",content:"地下",point:"117.151687|34.217019",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
+			 ,{title:"图书馆地下停车场",content:"地下",point:"117.151508|34.22175",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
+			 ,{title:"3号停车场",content:"露天",point:"117.156394|34.218482",isOpen:0,icon:{w:23,h:25,l:46,t:21,x:9,lb:12}}
+			 ];
+		//创建marker
+		function addMarker(){
+			for(var i=0;i<markerArr.length;i++){
+				var json = markerArr[i];
+				var p0 = json.point.split("|")[0];
+				var p1 = json.point.split("|")[1];
+				var point = new BMap.Point(p0,p1);
+				var iconImg = createIcon(json.icon);
+				var marker = new BMap.Marker(point,{icon:iconImg});
+				var iw = createInfoWindow(i);
+				var label = new BMap.Label(json.title,{"offset":new BMap.Size(json.icon.lb-json.icon.x+10,-20)});
+				marker.setLabel(label);
+				map.addOverlay(marker);
+				label.setStyle({
+							borderColor:"#808080",
+							color:"#333",
+							cursor:"pointer"
+				});
+				(function(){
+					var index = i;
+					var _iw = createInfoWindow(i);
+					var _info = getInfo(i);
+					var _marker = marker;
+					_marker.addEventListener("click",function(){
+						//alert(_info);
+						find(_info);
+						this.openInfoWindow(_iw);
+
+    //在这里添加一个脚本 当点击时判断title然后切换成不同的图片
+					});
+					_iw.addEventListener("open",function(){
+						_marker.getLabel().hide();
+					})
+					_iw.addEventListener("close",function(){
+						_marker.getLabel().show();
+					})
+					label.addEventListener("click",function(){
+						_marker.openInfoWindow(_iw);
+					})
+					if(!!json.isOpen){
+						label.hide();
+						_marker.openInfoWindow(_iw);
+					}
+				})()
+			}
+		}
+		//创建InfoWindow
+		function createInfoWindow(i){
+			var json = markerArr[i];
+			var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>"+json.content+"</div>");
+			return iw;
+		}
+		//得到某点的title的函数
+		 function getInfo(i){
+			var json = markerArr[i];
+			var info = json.title ;
+			return info;
+		}
+		//创建一个Icon
+		function createIcon(json){
+			var icon = new BMap.Icon("http://api.map.baidu.com/lbsapi/creatmap/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
+			return icon;
+		}
+		
+		initMap();//创建和初始化地图
+		function find(_info)
+				{
+					$.ajaxSetup({cache:false});
+					var id="ad0001";
+					var urlstr="http://134.175.107.144:8099/park/queryByAdminId";
+							$.ajax({
+							async: false,
+							url:urlstr,
+							type:"POST",
+							data:{
+							"adminId":id
+							},
+							dataType:"JSON",
+							success:function(msg)
+							{
+							if(msg.code!=0)
+							{
+							alert("获取失败，请检查是否联网");
+							}
+							if(msg.code==0)
+							{
+					           var number=0;
+								while(true)
+								{
+								var parkName=msg.parkList[number].parkName;
+								var parkId=msg.parkList[number].parkId;
+								var parkAddress=msg.parkList[number].parkAddress;
+								if(parkName==_info)
+								{
+									
+									var str = 
+									 "停车场id为："+parkId+
+									 "   停车场名为："+parkName + 
+									 "   停车场地址为: "+parkAddress;
+									alert(str);
+									break;
+								}
+								number++;
+								if(parkId==null)
+								{
+										  break;
+								}
+								}
+							}
+								}
+			
+								})
+				}
+	</script>
+
+</html>

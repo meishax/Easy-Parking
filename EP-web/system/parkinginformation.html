@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="refresh" content="30">
+        <title>车位信息管理</title>
+		<link rel="stylesheet" href="css/page.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+        <script type="text/javascript" src="js/index.js" ></script>   
+    </head>
+    <script>
+    </script>
+
+	<body onload="myfunction()">
+
+		<div class="left">
+			<div class="bigTitle">智能停车场管理系统</div>
+			<div class="lines">
+				<div onclick="pageClick(this)" ><img src="img/icon-1.png" />停车场位置信息</div>
+				<div onclick="pageClick(this)" class="active"><img src="img/icon-2.png" />车位信息管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-3.png" />实时监控管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-4.png" />停车场管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-5.png" />添加停车场</div>
+			</div>
+		</div>
+		<div class="top">
+			<div class="leftTiyle" id="flTitle">车位信息管理</div>
+			<div class="thisUser" id="thisUser">
+			</div>
+		</div>
+<div class="content">
+		请输入停车场的ID
+		<input type="text" value="" id="parkId1">
+		请输入管理员ID
+		<input type="text" value="" id="adminId1">
+		<button id="alertpark" onclick="changecanvas()">查询停车场车位情况</button>
+<canvas id="canvas" width="800" height="550" style="border:1px solid #000000;">   计算机楼停车场 
+		</canvas>
+	</div>
+		<script>
+			function myfunction()
+			{
+				document.getElementById("canvas").style.visibility="hidden";
+				$.ajax({
+    		url: "Coordinate.json",//json文件位置
+    		type: "GET",//请求方式为get
+    		dataType: "json", //返回数据格式为json
+   			success: function(data) {//请求成功完成后要执行的方法 
+				
+				var columnstring=JSON.stringify(data.Columns[0].count);//等于列数
+				var rowstring=JSON.stringify(data.Rows[0].count);//等于列数
+				var row = parseFloat(rowstring);//行列数变成浮点数
+				var column = parseFloat(columnstring);
+				var frontsize = 25;//字体大小
+				var	fontfamily = "serif";//字体
+				var rectwidth = 75;//停车位宽75 长100
+				var rectheight = 100;		
+				var interval = 15;//停车位之间的间隔为15
+				var frontloactionX = 24.5; //字体在停车位中的位置的位置
+				var frontlocationY = 55;
+				var Lx = rectwidth*column+(column-1)*interval;//计算每一个停车位的位置
+				var Ly = rectheight*row+(row-1)*interval;
+				while(Lx>770||Ly>670)//缩放比例 如果跟画布边缘间距较近 就 缩放5% 直到缩放到合适的大小
+				{
+					Lx = Lx*0.95;
+					Ly = Ly*0.95;
+					frontsize = frontsize*0.95;
+					rectheight = rectheight*0.95;
+					rectwidth = rectwidth*0.95;
+					interval = interval*0.95;
+					frontloactionX = frontloactionX*0.95;
+					frontlocationY = frontlocationY*0.95;
+				};
+				var countstring=JSON.stringify(data.NUMBER[0].count);//计数  一共几个停车位
+				var count=parseFloat(countstring);//变成浮点数
+				var px ="px";
+				var frontsizestring=frontsize+px; 
+				var font=frontsizestring+' '+fontfamily;
+				var X = 800;
+				var Y = 600;
+				var x =((X-Lx)/2);
+				var a = x;
+				var y =((Y-Ly)/2);
+				var oC = document.getElementById("canvas")
+        		var oGC = oC.getContext("2d")   
+				var character = 65;
+				var number = 0;
+				var judge = 0;
+				for(var i=1;i<=row;i++)//行
+				{
+					if (judge == 1) 
+					{
+						break;
+					}
+				for(var q=1;q<=column;q++)//列 循环
+					{		
+				    	var colourstring=JSON.stringify(data.coordinate[number].color); //每个车位的颜色
+						var colour=parseFloat(colourstring);
+						var countcomparestring = JSON.stringify(data.coordinate[number].count);//第几个画出来的停车位
+						var countcompare = parseFloat(countcomparestring);
+						var orderXstring = JSON.stringify(data.order[number].X);//第几行第几列
+						var orderYstring = JSON.stringify(data.order[number].y);
+						var orderX = parseFloat(orderXstring);
+						var orderY = parseFloat(orderYstring);
+						var qqstring = JSON.stringify(data.order[number].qq);//这一行的第几个  
+						var qq=parseFloat(qqstring);
+						var lx=x+((orderY-1)*(rectwidth+interval));// 在平面图里的位置 坐标加间隔
+						var ly=y+((orderX-1)*(rectheight+interval));
+						var cc=character+orderX-1;
+						var cstring=String.fromCharCode(cc);
+						var text=cstring+qq;//65是A的asii码值 这个是用来写这个停车位的数字的
+						number++;
+						if(number!=countcompare)
+						{
+							judge = 1;
+							break;
+						}
+						if(colour == 1)
+						{	
+							oGC.fillStyle = "rgba(255,0,0,0.7)";
+                        	oGC.fillRect(lx,ly,rectwidth,rectheight);
+							oGC.strokeStyle="rgba(0,0,0,0.8)";
+							oGC.lineWidth = 2;
+							oGC.strokeRect(lx,ly,rectwidth,rectheight);
+							//var c=String.fromCharCode(character);
+							//var text=c+q;
+							oGC.fillStyle = "rgba(255,255,255,1)"
+							oGC.font = font;
+							oGC.fillText(text,lx+frontloactionX,ly+frontlocationY);
+						}
+						else
+						{
+							oGC.fillStyle = "rgba(133,212,135,1)";
+                        	oGC.fillRect(lx,ly,rectwidth,rectheight);
+							oGC.strokeStyle="rgba(0,0,0,0.8)";
+							oGC.lineWidth = 2;
+							oGC.strokeRect(lx,ly,rectwidth,rectheight);
+							//var c=String.fromCharCode(character);
+							//var text=c+q;
+							oGC.fillStyle = "rgba(255,255,255,1)"
+							oGC.font = font;
+							oGC.fillText(text,lx+frontloactionX,ly+frontlocationY);
+						}
+					}
+			}
+		}})
+			}
+			function changecanvas()
+			{
+				document.getElementById("canvas").style.visibility="visible";
+			}
+
+		
+		</script>		
+
+
+    </body>
+
+
+</html>

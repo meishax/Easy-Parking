@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+        <meta charset="utf-8" />
+        <title>停车场管理</title>
+		<link rel="stylesheet" href="css/page.css" />
+		<script type="text/javascript" src="js/jquery.min.js" ></script>
+        <script type="text/javascript" src="js/index.js" ></script>   
+	</head>
+	<style>
+			* {
+			  padding: 0;
+			  margin: 0;
+			}
+			.wrap {
+			  width: 100%;
+			  margin:0 auto 0;
+			}
+			table {
+			  border-collapse: collapse;
+			  border-spacing: 0;
+			  border: 1px solid #c0c0c0;
+			}
+			th,
+			td {
+			  border: 1px solid #d0d0d0;
+			  color: #404060;
+			  padding: 10px;
+			}
+			th {
+			  background-color: #09c;
+			  font: bold 16px "微软雅黑";
+			  color: #fff;
+			}
+			td {
+			  font: 14px "微软雅黑";
+			}
+			td a.get {
+			  text-decoration: none;
+			}
+			a.del:hover {
+			  text-decoration: underline;
+			}
+			tbody tr {
+			  background-color: #f0f0f0;
+			}
+			tbody tr:hover {
+			  cursor: pointer;
+			  background-color: #fafafa;
+			}
+			.btnAdd {
+			  width: 110px;
+			  height: 30px;
+			  font-size: 20px;
+			  font-weight: bold;
+			}
+			.form-item {
+			  height: 100%;
+			  position: relative;
+			  padding-left: 100px;
+			  padding-right: 20px;
+			  margin-bottom: 20px;
+			  line-height: 25px;
+			}
+			.form-item > .lb {
+			  position: absolute;
+			  left: 0;
+			  top: 0;
+			  display: block;
+			  width: 100px;
+			  text-align: right;
+			}
+			.form-item > .txt {
+			  width: 300px;
+			  height: 32px;
+			}
+			.mask {
+			  position: absolute;
+			  top: 0px;
+			  left: 0px;
+			  width: 100%;
+			  height: 100%;
+			  background: #000;
+			  opacity: 0.15;
+			  display: none;
+			}
+			.form-add {
+			  position: fixed;
+			  top: 20%;
+			  left: 50%;
+			  margin-left: -197px;
+			  padding-bottom: 20px;
+			  background: #fff;
+			  display: none;
+			}
+			.form-add-title {
+			  background-color: #f7f7f7;
+			  border-width: 1px 1px 0 1px;
+			  border-bottom: 0;
+			  margin-bottom: 15px;
+			  position: relative;
+			}
+			.form-add-title span {
+			  width: auto;
+			  height: 18px;
+			  font-size: 16px;
+			  font-family: 宋体;
+			  font-weight: bold;
+			  color: rgb(102, 102, 102);
+			  text-indent: 12px;
+			  padding: 8px 0px 10px;
+			  margin-right: 10px;
+			  display: block;
+			  overflow: hidden;
+			  text-align: left;
+			}
+			.form-add-title div {
+			  width: 16px;
+			  height: 20px;
+			  position: absolute;
+			  right: 10px;
+			  top: 6px;
+			  font-size: 30px;
+			  line-height: 10px;
+			  cursor: pointer;
+			}
+			.form-submit {
+			  text-align: center;
+			}
+			.form-submit input {
+			  width: 170px;
+			  height: 32px;
+			}
+			.mask1 {
+			  position: absolute;
+			  top: 0px;
+			  left: 0px;
+			  width: 100%;
+			  height: 100%;
+			  background: #000;
+			  opacity: 0.15;
+			  display: none;
+			}
+			.form-change {
+			  position: fixed;
+			  top: 20%;
+			  left: 50%;
+			  margin-left: -197px;
+			  padding-bottom: 20px;
+			  background: #fff;
+			  display: none;
+			}
+			.form-change-title {
+			  background-color: #f7f7f7;
+			  border-width: 1px 1px 0 1px;
+			  border-bottom: 0;
+			  margin-bottom: 15px;
+			  position: relative;
+			}
+			.form-change-title span {
+			  width: auto;
+			  height: 18px;
+			  font-size: 16px;
+			  font-family: 宋体;
+			  font-weight: bold;
+			  color: rgb(102, 102, 102);
+			  text-indent: 12px;
+			  padding: 8px 0px 10px;
+			  margin-right: 10px;
+			  display: block;
+			  overflow: hidden;
+			  text-align: left;
+			}
+			.form-change-title div {
+			  width: 16px;
+			  height: 20px;
+			  position: absolute;
+			  right: 10px;
+			  top: 6px;
+			  font-size: 30px;
+			  line-height: 10px;
+			  cursor: pointer;
+			}
+		  </style>
+    <script>
+    </script>
+
+	<body onload="myfunction()">
+
+		<div class="left">
+			<div class="bigTitle">智能停车场管理系统</div>
+			<div class="lines">
+				<div onclick="pageClick(this)" ><img src="img/icon-1.png" />停车场位置信息</div>
+				<div onclick="pageClick(this)"><img src="img/icon-2.png" />车位信息管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-3.png" />实时监控管理</div>
+				<div onclick="pageClick(this)" class="active"><img src="img/icon-4.png" />停车场管理</div>
+				<div onclick="pageClick(this)"><img src="img/icon-5.png" />添加停车场</div>
+			</div>
+		</div>
+		<div class="top">
+			<div class="leftTiyle" id="flTitle">停车场管理</div>
+			<div class="thisUser">当前用户:郭子杨
+			</div>
+		</div>
+<div class="content">
+		<div class="wrap">
+				<div>
+				  <input type="button" value="添加数据" id="j_btnAddData" class="btnAdd"/>
+				</div>
+				<table>
+				  <thead>
+				  <tr>
+					<th>停车场号</th>
+					<th>停车场名称</th>
+					<th>停车场地址</th>
+					<th>管理员id</th>
+					<th>停车场停车位总数</th>
+					<th>停车场经度</th>
+					<th>停车场纬度</th>
+					<th>修改停车场记录</th>
+					<th>删除停车场记录</th>
+			   
+			  
+				  </tr>
+				  </thead>
+				  <tbody id="j_tb">
+				  <tr>
+					<!-- <td><input type="checkbox"/></td> -->
+				  </tr>
+			  
+				  </tbody>
+				</table>
+			  </div>
+			  <div id="j_mask1" class="mask1"></div>
+			  <div id="j_formChange" class="form-change">
+				<div class="form-add-title">
+				  <span>修改数据</span>
+				  <div id="j_hideFormChange">x</div>
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkId">停车场号：</label>
+				  <input class="txt" type="text" id="parkId" placeholder="请输入停车场号">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkName">停车场名称：</label>
+				  <input class="txt" type="text" id="parkName" placeholder="请输入停车场名称">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkAddress">停车场地址：</label>
+				  <input class="txt" type="text" id="parkAddress" placeholder="请输入停车场地址">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="adminId">管理员id：</label>
+				  <input class="txt" type="text" id="adminId" placeholder="请输入管理员id">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkTotalNum">停车场停车位总数：</label>
+				  <input class="txt" type="text" id="parkTotalNum" placeholder="请输入停车场停车位总数">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkLongitude">停车场经度：</label>
+				  <input class="txt" type="text" id="parkLongitude" placeholder="请输入停车场经度">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkLatitude">停车场纬度：</label>
+				  <input class="txt" type="text" id="parkLatitude" placeholder="请输入停车场纬度">
+				</div>
+				<div class="form-submit">
+				  <input type="button" value="修改数据" id="j_btnChange">
+				</div>
+			  </div>
+			  <div id="j_mask" class="mask"></div>
+			  <div id="j_formAdd" class="form-add">
+				<div class="form-add-title">
+				  <span>添加数据</span>
+				  <div id="j_hideFormAdd">x</div>
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkId">停车场号：</label>
+				  <input class="txt" type="text" id="parkId1" placeholder="请输入停车场号">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkName">停车场名称：</label>
+				  <input class="txt" type="text" id="parkName1" placeholder="请输入停车场名称">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkAddress">停车场地址：</label>
+				  <input class="txt" type="text" id="parkAddress1" placeholder="请输入停车场地址">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="adminId">管理员id：</label>
+				  <input class="txt" type="text" id="adminId1" placeholder="请输入管理员id">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkTotalNum">停车场停车位总数：</label>
+				  <input class="txt" type="text" id="parkTotalNum1" placeholder="请输入停车场停车位总数">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkLongitude">停车场经度：</label>
+				  <input class="txt" type="text" id="parkLongitude1" placeholder="请输入停车场经度">
+				</div>
+				<div class="form-item">
+				  <label class="lb" for="parkLatitude">停车场纬度：</label>
+				  <input class="txt" type="text" id="parkLatitude1" placeholder="请输入停车场纬度">
+				</div>
+				<div class="form-submit">
+				  <input type="button" value="添加数据" id="j_btnAdd">
+				</div>
+			  </div>
+
+ </div>
+ <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+   function myfunction()
+    {
+    $.ajaxSetup({cache:false});
+		var urlstr="Coordinate2.json";
+		$.ajax({
+			async: false,
+			url:urlstr,
+			type:"POST",
+			/*/data:{
+				"adminId":"ad0001"
+			},*/
+			dataType:"JSON",
+			success:function(msg)
+			{
+				/*if(msg.code!=0)
+				{
+					alert("获取失败，请检查管理员ID是否正确");
+				}
+				
+				if(msg.code==0)
+				{*/
+                    var number=0;
+					while(true)
+					{
+                        var parkId=msg.parkList[number].parkId;
+                        var parkName=msg.parkList[number].parkName;
+                        var parkAddress=msg.parkList[number].parkAddress;
+                        var adminId=msg.parkList[number].adminId;
+                        var parkTotalNum=msg.parkList[number].parkTotalNum;
+                        var parkLongitude=msg.parkList[number].parkLongitude;
+                        var parkLatitude=msg.parkList[number].parkLatitude;
+                        number++;
+                        var str = '<tr>'
+                            + '<td>' + parkId + '</td>'
+                            + '<td>' + parkName + '</td>'
+                            + '<td>' + parkAddress + '</td>'
+                            + '<td>' + adminId + '</td>'
+                            + '<td>' + parkTotalNum + '</td>'
+                            + '<td>' + parkLongitude + '</td>'
+                            + '<td>' + parkLatitude + '</td>'
+                            + '<td><a href="javascrip:;"  class="change">修改</a></td>'
+                            + '<td><a href="javascrip:;"  class="get">删除</a></td>'
+                            + '</tr>';
+                            $("#j_tb").append(str);
+						if(parkId==null)
+						{
+							break;
+						}
+					}
+				
+			}
+			
+		})
+
+    }
+  $(document).ready(function () {
+    $("#j_btnAddData").click(function () {
+      $("#j_mask").show();
+      $("#j_formAdd").show();
+      $("#parkId1").val("");
+      $("#parkName1").val("");
+      $("#parkAddress1").val("");
+      $("#adminId1").val("");
+      $("#parkTotalNum1").val("");
+      $("#parkLongitude1").val("");
+      $("#parkLatitude1").val("");
+    });
+    $("#j_hideFormAdd").click(function () {
+      $("#j_mask").hide();
+      $("#j_formAdd").hide();
+    });
+    $("#j_hideFormChange").click(function () {
+      $("#j_mask1").hide();
+      $("#j_formChange").hide();
+    });
+    $("#j_btnAdd").click(function () {
+      var parkId=$("#parkId1").val();
+      var parkName=$("#parkName1").val();
+      var parkAddress=$("#parkAddress1").val();
+      var adminId=$("#adminId1").val();
+      var parkTotalNum=$("#parkTotalNum1").val();
+      var parkLongitude=$("#parkLongitude1").val();
+      var parkLatitude=$("#parkLatitude1").val();
+      if (parkId == "" ||  parkName == "" || parkAddress =="" || adminId == "" || parkTotalNum == "" || parkLongitude== "" || parkLatitude == "" ) 
+      {
+        alert("表格不能为空");
+        return;
+
+      }
+      $.ajaxSetup({cache:false});
+var urlstr="http://134.175.107.144:8099/park/inserPark";
+$.ajax({
+    async: false,
+    url:urlstr,
+    type:"POST",
+    data:{
+        "parkId":parkId,"parkName":parkName,"parkAddress":parkAddress,"adminId":adminId,"parkTotalNum":parkTotalNum,"parkLongitude":parkLongitude,"parkLatitude":parkLatitude
+    },
+    dataType:"JSON",
+    success:function(msg)
+    {
+        if(msg.code!=1)
+        {
+            alert("操作失败，请检查输入的停车场内容是否正确");
+        }
+        
+        if(msg.code==1)
+        {
+            
+                alert(msg.message);
+        }
+        
+    }
+    
+})
+     /* var str = '<tr>'
+          + '<td>' + parkId + '</td>'
+          + '<td>' + parkName + '</td>'
+          + '<td>' + parkAddress + '</td>'
+          + '<td>' + adminId + '</td>'
+          + '<td>' + parkTotalNum + '</td>'
+          + '<td>' + parkLongitude + '</td>'
+          + '<td>' + parkLatitude + '</td>'
+          + '<td><a href="javascrip:;"  class="change">修改</a></td>'
+          + '<td><a href="javascrip:;"  class="get">删除</a></td>'
+          + '</tr>';
+          $("#j_tb").append(str);*/
+          $("#j_mask").hide();
+          $("#j_formAdd").hide();
+          window.location.reload();
+    });
+    $("#j_tb").on("click",".get",function(){
+      
+               var deparkId= $(this).parent().parent().children("td").eq(0).text();
+               if(confirmAct())
+               {
+                   var judge=1;
+                $.ajaxSetup({cache:false});
+		        var urlstr="http://134.175.107.144:8099/park/deleteByParkId";
+		        $.ajax({
+			    async: false,
+			    url:urlstr,
+			    type:"POST",
+			    data:{
+				    "parkId":deparkId
+			        },
+			    dataType:"JSON",
+			    success:function(msg)
+		    	{
+			    	if(msg.code!=0)
+				    {
+                        alert("操作失败，不存在该停车场");
+                        judge=0;
+				    }
+				
+			    	if(msg.code==0)
+				    {
+                        window.location.reload();
+                        alert("操作成功");
+                        
+				    }
+			    }
+				
+            });
+		}
+             
+         
+            
+      
+    });
+  });
+  function confirmAct() 
+{ 
+  if(confirm('确定要执行此操作吗?')) 
+  { 
+    return true; 
+  } 
+  return false; 
+} 
+$("#j_tb").on("click",".change",function(){
+  var p=$(this).parent().parent().children("td");
+  $("#j_mask1").show();
+  $("#j_formChange").show();
+  $("#parkId").val(p.eq(0).text());
+  $("#parkName").val(p.eq(1).text());
+  $("#parkAddress").val(p.eq(2).text());
+  $("#adminId").val(p.eq(3).text());
+  $("#parkTotalNum").val(p.eq(4).text());
+  $("#parkLongitude").val(p.eq(5).text());
+  $("#parkLatitude").val(p.eq(6).text());
+})
+//修改停车场信息
+$("#j_btnChange").click(function () {
+      var parkId=$("#parkId").val();
+      var parkName=$("#parkName").val();
+      var parkAddress=$("#parkAddress").val();
+      var adminId=$("#adminId").val();
+      var parkTotalNum=$("#parkTotalNum").val();
+      var parkLongitude=$("#parkLongitude").val();
+      var parkLatitude=$("#parkLatitude").val();
+      if (parkId == "" ||  parkName == "" || parkAddress =="" || adminId == "" || parkTotalNum == "" || parkLongitude== "" || parkLatitude == "" ) 
+      {
+        alert("表格不能为空");
+        return;
+      }
+      $.ajaxSetup({cache:false});
+var urlstr="http://134.175.107.144:8099/park/updatePark";
+$.ajax({
+    async: false,
+    url:urlstr,
+    type:"POST",
+    data:{
+        "parkId":parkId,"parkName":parkName,"parkAddress":parkAddress,"adminId":adminId,"parkTotalNum":parkTotalNum,"parkLongitude":parkLongitude,"parkLatitude":parkLatitude
+    },
+    dataType:"JSON",
+    success:function(msg)
+    {
+        if(msg.code!=0)
+        {
+            alert("操作失败，请勿修改停车场号或管理员号");
+        }
+        
+        if(msg.code==0)
+        {
+            
+                alert(msg.message);
+        }
+        
+    }
+    
+})
+      /*var str = '<tr>'
+          + '<td>' + parkId + '</td>'
+          + '<td>' + parkName + '</td>'
+          + '<td>' + parkAddress + '</td>'
+          + '<td>' + adminId + '</td>'
+          + '<td>' + parkTotalNum + '</td>'
+          + '<td>' + parkLongitude + '</td>'
+          + '<td>' + parkLatitude + '</td>'
+          + '<td><a href="javascrip:;"  class="change">修改</a></td>'
+          + '<td><a href="javascrip:;"  class="get">删除</a></td>'
+          + '</tr>';
+          $("#j_tb").append(str);*/
+          $("#j_mask1").hide();
+          $("#j_formChange").hide();
+          window.location.reload();
+    });
+</script>
+    </body>
+
+
+</html>
