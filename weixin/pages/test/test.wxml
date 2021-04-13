@@ -1,0 +1,4 @@
+<!--pages/test/test.wxml-->
+<button bindtap='test1'>测试1</button>
+<input placeholder='UserId' value='{{userId}}' bindinput='inputUserId' ></input>
+<button bindtap='test2'>测试2</button>

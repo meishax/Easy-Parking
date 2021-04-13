@@ -1,0 +1,46 @@
+.preview-tips {
+  margin: 20rpx 0;
+}
+.video {
+  margin: 50px auto;
+  width: 100%;
+  height: 300rpx;
+}
+.border_writh{
+  width: 30rpx;
+  height: 30rpx;
+}
+.btn{
+  background-color: #4E89D7;
+  color: white
+}
+.camera{
+  position: absolute;
+  top: 5rpx;
+  left: 5rpx;
+  width: 10rpx;
+  height: 14rpx;
+}
+.section{
+  line-height: 80rpx;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  display: flex;
+  border-bottom: 1rpx dotted #ccc;
+  color: #666;
+  padding: 5px;
+  height: 68rpx;
+}
+.label{
+  font-size: 42rpx;
+  /* padding-right: 5px; */
+  color: 	#4E89D7;
+  /* width: 200rpx; */
+}
+.text{
+  padding-left: 25rpx;
+}
+.d_note{
+  text-align: right;
+  justify-content:flex-end;
+}

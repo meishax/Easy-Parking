@@ -1,0 +1,42 @@
+<view class="page-body">
+<view class="page-body-wrapper">
+<camera device-position="back" flash="off" binderror="error" style="width: 100%; height: 300px;"></camera>
+<!-- <camera device-position="front" flash="off" binderror="error" class="camera" bindstop='bindstop' binderror='binderror'>
+<!-- <cover-view class='border_writh'></cover-view> -->
+<!-- </camera> -->
+<view class="btn-area">
+<button class='btn' bindtap="stoptime">请将摄像头对准地标或门牌号</button>
+</view>
+<view hidden='{{!isLocated}}'>
+<view class='section'>
+<text class='text'>目的地:</text>
+<label class='label'>{{destination}}</label>
+</view>
+<view hidden='{{!isRefreshed}}'>
+<view class='section'>
+<text class='text'>当前位置:</text>
+<label class='label'>{{curLocation}}</label>
+</view>
+<view class='section d_note'>
+<label class='label'>{{distance}}</label>
+<text>(大约</text><label class='label'>{{mins}}</label><text>分钟)</text>
+</view>
+<view class='section'>
+<text>{{dir[0]}}</text>
+</view>
+<view class='section'>
+<text>{{dir[1]}}</text>
+</view>
+<view class='section'>
+<text>{{dir[2]}}</text>
+</view>
+<view class='section'>
+<text>{{dir[3]}}</text>
+</view>
+<view class='section'>
+<text>{{dir[4]}}</text>
+</view>
+</view>
+</view>
+</view>
+</view>

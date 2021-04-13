@@ -1,0 +1,54 @@
+
+<form bindsubmit='formSubmit'>
+  <view class='row-wrap'>
+    <view class='section'>
+
+      <lable class='lable2'>联系方式</lable>
+
+      <picker  name='联系方式' range='{{contactarray}}' bindchange='contactChangeEvent' 
+      value='{{contactidex}}'> 
+      <lable class='lable'>{{contactarray[contactidex]}}</lable><lable class='sign'>﹀</lable></picker>
+
+      <input name='具体联系方式' class='input' type='text' placeholder='请填写手机号/微信号/QQ号' 
+      bindinput='contactinput'   placeholder-class='placeholder'></input>
+
+    </view>
+
+    <view class='section' >
+      <lable class='lable2'>地点</lable>
+      <input name='地点' class='input' type='text' placeholder='请填写你车位的地址'   bindinput='addressinput'                    placeholder-class='placeholder'></input>
+    </view>
+
+   <!-- <view class='section' >
+      <lable class='lable2'>坐标</lable>
+      <input name='坐标' class='input' type='text' placeholder='请精确标注车位位置'   bindinput='addressinput'                    placeholder-class='placeholder'></input>
+    </view>-->
+
+    <view class='section' >
+      <lable class='lable2'>租金</lable>
+      <input name='租金' class='input' type='text' placeholder='请填写租金'   bindinput='rentinput'                           placeholder-class='placeholder'></input>
+      <lable class='lable'>(元/月)</lable>
+    </view>
+
+    <view class='section'>
+      <label class='lable'>请选择车位类型：</label>
+      <radio-group name='车位类型' bindchange='radiochange'>
+        <label class='lable'><radio value='小区' checked='true'></radio>小区</label>
+        <label class='lable'><radio value='写字楼' checked='false'></radio>写字楼</label>
+        <label class='lable'><radio value='其他' checked='false'></radio>其他</label>
+      </radio-group>
+    </view>
+  </view>
+
+  <view >
+  <label class='lable3'>描述</label>
+  <textarea name='车位描述' class='input2' type='text' placeholder='您可以再描述一下您的车位'   bindinput='descriptioninput'           placeholder-class='placeholder'></textarea>
+  </view>
+
+
+  <view class='btn-area'>
+  <button form-type='submit' class='btn'>提交</button>
+  </view>
+
+</form>
+
