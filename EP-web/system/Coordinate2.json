@@ -1,0 +1,11 @@
+{
+
+park_id{"pa0001"},
+park_name{"中国矿业大学停车场"},
+park_address{"中国矿业大学"},
+admin_id{"ad0001"},
+park_total_num{6},
+park_longtitude{"177"},
+park_latitude{"034"}
+	
+}
