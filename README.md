@@ -1,1 +1,3 @@
-
+- This project is a Big Data Innovation Laboratory project of China University of Mining and Technology. It had won a national practical innovation patent and the third prize of Jiangsu Programming Competition. 
+- If you need to refer to the source code, please follow the mpl-2.0 license!!!
+- Express gratitude: Prof. Chen pengpeng, Dr. Yang Xu, Dr. Xu Meijia, Dr. Xie Wenxin, Dr. Huang Ziwei, Dr. Chen Xuan and Mr. Guo Ziyang
